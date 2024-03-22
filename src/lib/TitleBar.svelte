@@ -68,6 +68,8 @@
 		align-items: center;
 		width: 30px;
 		height: 30px;
+		font-weight: bold;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 	.titlebar-button:hover {
 		background: #ffffff23;

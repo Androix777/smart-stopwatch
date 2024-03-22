@@ -105,6 +105,8 @@
 		text-align: center;
 		cursor: pointer;
 		background-color: rgba(0, 0, 0, 0.1);
-		color: white;
+		color: rgb(0, 0, 0);
+		font-weight: bold;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 </style>
