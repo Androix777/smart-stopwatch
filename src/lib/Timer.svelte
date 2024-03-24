@@ -48,17 +48,11 @@
 		time.set(0);
 		$isRunning = false;
 	};
-
-	onMount(() => {
-		window.addEventListener('click', toggleTimer);
-		return () => {
-			window.removeEventListener('click', toggleTimer);
-		};
-	});
 </script>
 
 <div
 	class="timer"
+	on:click={toggleTimer}
 	style="background-color: {$state === TimerState.RUNNING
 		? 'var(--running-color)'
 		: $state === TimerState.STOPPED
