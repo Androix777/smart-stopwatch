@@ -1,8 +1,10 @@
 # Smart Stopwatch
 
+![interface](docs/screen1.png)
+
 A smart stopwatch that automatically turns on/off when certain windows are in focus.
 
-The stopwatch is configured by drag-and-drop the settings yaml file into the stopwatch window. This system allows you to keep different settings for different usage scenarios. The settings specify the windows at which the stopwatch counts time. Example of a settings file "settings.yaml":
+The stopwatch is configured by drag-and-drop the settings yaml file into the stopwatch window. This system allows different settings to be stored for different usage scenarios. The settings specify the windows at which the stopwatch counts time. Example of a settings file "settings.yaml":
 
 ```yaml
 whitelist:
