@@ -38,20 +38,57 @@
 	});
 
 	async function apply_settings(path: string): Promise<void> {
+	try {
+		const contents = await readTextFile(path);
+		let settings: any;
 		try {
-			const contents = await readTextFile(path);
-			const settings = yaml.parse(contents) as { whitelist: WhitelistItem[] };
-
-			if (!settings.whitelist || !Array.isArray(settings.whitelist)) {
-				message('Error');
-			} else {
-				whitelist = settings.whitelist;
-				message('Settings applied');
-			}
+			settings = yaml.parse(contents);
 		} catch (error) {
-			message('Error');
+			message('Invalid YAML syntax');
+			return;
 		}
+
+		if (!settings.whitelist || !Array.isArray(settings.whitelist)) {
+			message('Invalid whitelist format');
+			return;
+		}
+
+		const allowedKeys = ['title', 'process_path', 'app_name', 'window_id', 'process_id'];
+		let invalidKeys = new Set<string>();
+		let hasValuesWithoutKeys = false;
+		const invalidItems = settings.whitelist.filter((item: any) => {
+			if (item && typeof item === 'object' && !Array.isArray(item)) {
+				const itemKeys = Object.keys(item);
+				const hasInvalidKeys = itemKeys.some((key) => {
+					const isInvalidKey = !allowedKeys.includes(key);
+					if (isInvalidKey) {
+						invalidKeys.add(key);
+					}
+					return isInvalidKey;
+				});
+				return hasInvalidKeys;
+			} else {
+				hasValuesWithoutKeys = true;
+				return true;
+			}
+		});
+
+		if (hasValuesWithoutKeys) {
+			message('Whitelist contains values without keys. Make sure you add a space after the ":" character.');
+			return;
+		}
+
+		if (invalidItems.length > 0) {
+			message(`Invalid fields in whitelist items: ${[...invalidKeys].join(', ')}`);
+			return;
+		}
+
+		whitelist = settings.whitelist;
+		message('Settings applied');
+	} catch (error) {
+		message('Settings Error');
 	}
+}
 
 	async function get_window(): Promise<void> {
 		try {
